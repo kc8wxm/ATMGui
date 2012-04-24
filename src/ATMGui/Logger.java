@@ -33,7 +33,7 @@ public class Logger
     public void createLogEntry(String logEntry)
     {
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(logFile, true));
+            writer = new BufferedWriter(new FileWriter(logFile, true));
             String logMessage = "Date: " + new Date();
             logMessage += " LogEntry: " + logEntry.replaceAll("\n", "");
             writer.write(logMessage + "\n");
