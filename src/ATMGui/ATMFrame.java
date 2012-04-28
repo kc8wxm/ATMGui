@@ -1,17 +1,78 @@
 package ATMGui;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
+
 /**
+ * JFrame to create the GUI for the ATM machine machine
  *
  * @author Steve Sutton, <ssutton@student.ncmich.edu>
+ * @version 0.1 (04/28/2012)
  */
 public class ATMFrame extends javax.swing.JFrame
 {
+    private ATM atm;
+    private Bank bank;
+    private Card card1;
+    private Card card2;
+    private Input input;
+    private Action actionType;
+    private Card insertedCard;
+
+    private final String CARD1_PIN = "4455", CARD2_PIN = "5544";
+    private final int CARD1_ACCOUNT1_AMOUNT = 500,
+            CARD1_ACCOUNT2_AMOUNT = 1200,
+            CARD2_ACCOUNT1_AMOUNT = 400,
+            CARD2_ACCOUNT2_AMOUNT = 2000;
 
     /**
      * Creates new form ATMFrame
      */
     public ATMFrame() {
         initComponents();
+        setupBank();
+        setupPetoskeyBankAtm();
+        setupBankAtmCards();
+        input = new Input();
+        actionType = null;
+        insertedCard = null;
+    }
+
+    /**
+     * Create the Bank
+     */
+    private void setupBank() {
+        bank = new Bank();
+    }
+
+    /**
+     * Setup the Petoskey's ATM Machine
+     */
+    private void setupPetoskeyBankAtm() {
+        atm = new ATM(bank, "Petoskey");
+    }
+
+    /**
+     * Setup the Cards with accounts and add to Bank
+     */
+    private void setupBankAtmCards()
+    {
+        // create card1 with two accounts
+        card1 = new Card();
+        Account card1Account1 = new Account("Sutton", "Steve", CARD1_ACCOUNT1_AMOUNT);
+        Account card1Account2 = new Account("Sutton", "Steve", CARD1_ACCOUNT2_AMOUNT);
+        card1.addAccount(card1Account1);
+        card1.addAccount(card1Account2);
+        // add card to bank
+        bank.addCard(CARD1_PIN, card1);
+
+        // create card2 with two accounts
+        card2 = new Card();
+        Account card2Account1 = new Account("Sutton", "Carol", CARD2_ACCOUNT1_AMOUNT);
+        Account card2Account2 = new Account("Sutton", "Carol", CARD2_ACCOUNT2_AMOUNT);
+        card2.addAccount(card2Account1);
+        card2.addAccount(card2Account2);
+        // add card to bank
+        bank.addCard(CARD2_PIN, card2);
     }
 
     /**
@@ -23,113 +84,360 @@ public class ATMFrame extends javax.swing.JFrame
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        button2 = new javax.swing.JButton();
-        button1 = new javax.swing.JButton();
-        button3 = new javax.swing.JButton();
-        button4 = new javax.swing.JButton();
-        button5 = new javax.swing.JButton();
-        button6 = new javax.swing.JButton();
-        button7 = new javax.swing.JButton();
-        button8 = new javax.swing.JButton();
-        button9 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        display = new javax.swing.JTextArea();
+        jPanel1 = new javax.swing.JPanel();
         button0 = new javax.swing.JButton();
-        buttonEnter = new javax.swing.JButton();
+        button1 = new javax.swing.JButton();
+        button2 = new javax.swing.JButton();
+        button9 = new javax.swing.JButton();
+        button6 = new javax.swing.JButton();
+        button5 = new javax.swing.JButton();
+        button4 = new javax.swing.JButton();
+        button3 = new javax.swing.JButton();
+        button8 = new javax.swing.JButton();
+        button7 = new javax.swing.JButton();
         buttonCancel = new javax.swing.JButton();
+        buttonEnter = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        getBalanceButton = new javax.swing.JButton();
+        depositButton = new javax.swing.JButton();
+        transferButton = new javax.swing.JButton();
+        withdrawalButton = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        cardMenu1 = new javax.swing.JMenuItem();
+        cardMenu2 = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        envelopeMenu1 = new javax.swing.JMenuItem();
+        envelopeMenu2 = new javax.swing.JMenuItem();
+        envelopeMenu3 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Bank of Petoskey ATM");
 
-        button2.setText("2");
-
-        button1.setText("1");
-
-        button3.setText("3");
-
-        button4.setText("4");
-
-        button5.setText("5");
-
-        button6.setText("6");
-
-        button7.setText("7");
-
-        button8.setText("8");
-
-        button9.setText("9");
+        display.setColumns(20);
+        display.setRows(5);
+        jScrollPane1.setViewportView(display);
 
         button0.setText("0");
+        button0.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button0ActionPerformed(evt);
+            }
+        });
+
+        button1.setText("1");
+        button1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button1ActionPerformed(evt);
+            }
+        });
+
+        button2.setText("2");
+        button2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button2ActionPerformed(evt);
+            }
+        });
+
+        button9.setText("9");
+        button9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button9ActionPerformed(evt);
+            }
+        });
+
+        button6.setText("6");
+        button6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button6ActionPerformed(evt);
+            }
+        });
+
+        button5.setText("5");
+        button5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button5ActionPerformed(evt);
+            }
+        });
+
+        button4.setText("4");
+        button4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button4ActionPerformed(evt);
+            }
+        });
+
+        button3.setText("3");
+        button3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button3ActionPerformed(evt);
+            }
+        });
+
+        button8.setText("8");
+        button8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button8ActionPerformed(evt);
+            }
+        });
+
+        button7.setText("7");
+        button7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button7ActionPerformed(evt);
+            }
+        });
+
+        buttonCancel.setText("Cancel");
 
         buttonEnter.setText("Enter");
         buttonEnter.setMaximumSize(new java.awt.Dimension(86, 29));
         buttonEnter.setMinimumSize(new java.awt.Dimension(86, 29));
+        buttonEnter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonEnterActionPerformed(evt);
+            }
+        });
 
-        buttonCancel.setText("Cancel");
+        org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel1Layout.createSequentialGroup()
+                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                            .add(button7, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 42, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(button4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 42, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jPanel1Layout.createSequentialGroup()
+                                .add(button5, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 41, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(button6, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 41, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(2, 2, 2))
+                            .add(jPanel1Layout.createSequentialGroup()
+                                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                                    .add(button8, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 41, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                    .add(button0, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 41, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(button9, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 42, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(1, 1, 1)))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(buttonCancel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 86, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(buttonEnter, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 86, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                    .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel1Layout.createSequentialGroup()
+                        .add(button1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 42, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(button2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 41, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(button3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 43, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(10, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                    .add(jPanel1Layout.createSequentialGroup()
+                        .add(buttonEnter, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(buttonCancel))
+                    .add(jPanel1Layout.createSequentialGroup()
+                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                            .add(button1)
+                            .add(button2)
+                            .add(button3))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                            .add(button4)
+                            .add(button5)
+                            .add(button6))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                            .add(button7)
+                            .add(button8)
+                            .add(button9))))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(button0)
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jPanel2.setLayout(new java.awt.GridLayout(2, 0));
+
+        getBalanceButton.setText("Get Balance");
+        getBalanceButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                getBalanceButtonActionPerformed(evt);
+            }
+        });
+        jPanel2.add(getBalanceButton);
+
+        depositButton.setText("Deposit");
+        jPanel2.add(depositButton);
+
+        transferButton.setText("Transfer");
+        jPanel2.add(transferButton);
+
+        withdrawalButton.setText("Withdrawal");
+        jPanel2.add(withdrawalButton);
+
+        jMenu1.setText("Cards");
+
+        cardMenu1.setText("Card 1 [4455]");
+        cardMenu1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cardMenu1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(cardMenu1);
+
+        cardMenu2.setText("Card 2 [5544]");
+        jMenu1.add(cardMenu2);
+
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Envelopes");
+
+        envelopeMenu1.setText("100");
+        jMenu2.add(envelopeMenu1);
+
+        envelopeMenu2.setText("200");
+        jMenu2.add(envelopeMenu2);
+
+        envelopeMenu3.setText("125");
+        jMenu2.add(envelopeMenu3);
+
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .add(47, 47, 47)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(layout.createSequentialGroup()
-                        .add(button1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 42, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(button2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 41, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(button3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 43, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(0, 0, Short.MAX_VALUE))
-                    .add(layout.createSequentialGroup()
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                            .add(button7, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 42, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(button4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 42, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(layout.createSequentialGroup()
-                                .add(button5, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 41, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(button6, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 41, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .add(0, 0, Short.MAX_VALUE))
-                            .add(layout.createSequentialGroup()
-                                .add(button8, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 41, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(button9, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 42, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .add(buttonEnter, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 86, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
-                    .add(layout.createSequentialGroup()
-                        .add(0, 0, Short.MAX_VALUE)
-                        .add(button0, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 43, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(54, 54, 54)
-                        .add(buttonCancel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 86, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                .add(22, 22, 22))
+                .addContainerGap()
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                    .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(jScrollPane1)
+                    .add(jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .add(111, 111, 111)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(button1)
-                    .add(button2)
-                    .add(button3))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(button4)
-                    .add(button5)
-                    .add(button6))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(button7)
-                    .add(button8)
-                    .add(button9)
-                    .add(buttonEnter, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(button0)
-                    .add(buttonCancel))
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addContainerGap()
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(jPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 93, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void cardMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cardMenu1ActionPerformed
+        // ask for pin number
+        display.setText("Please Enter Your PIN");
+        actionType = Action.INSERT_CARD;
+        insertedCard = card1;
+    }//GEN-LAST:event_cardMenu1ActionPerformed
+
+    private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
+        input.addInput(1);
+    }//GEN-LAST:event_button1ActionPerformed
+
+    private void buttonEnterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEnterActionPerformed
+        String inputString = input.getInputAsString();
+        input.clearInput();
+        if (actionType != null) {
+            switch(actionType) {
+                case INSERT_CARD:
+                    if (insertedCard != null && inputString.length() > 0) {
+                        if(atm.enterCard(insertedCard, inputString)) {
+                            display.setText("What would you like to do?");
+                            actionType = null;
+                        }
+                        else {
+                            if (atm.getToManyAttempts()) {
+                                insertedCard = null;
+                            }
+                            display.setText(atm.getLastMessage());
+                        }
+                    }
+                    break;
+                case BALANCE:
+                    String message = "";
+                    if (insertedCard != null && inputString.length() > 0) {
+                        int accountIndex = Integer.parseInt(inputString);
+                        accountIndex--;
+                        System.out.println("Account index used" + accountIndex);
+                        int balance = atm.getBalanceForAccount(accountIndex);
+                        message += atm.getLastMessage();
+                        message += balance;
+                    }
+                    display.setText(message);
+                    break;
+            }
+        }
+    }//GEN-LAST:event_buttonEnterActionPerformed
+
+    private void button2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button2ActionPerformed
+        input.addInput(2);
+    }//GEN-LAST:event_button2ActionPerformed
+
+    private void button3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button3ActionPerformed
+        input.addInput(3);
+    }//GEN-LAST:event_button3ActionPerformed
+
+    private void button4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button4ActionPerformed
+        input.addInput(4);
+    }//GEN-LAST:event_button4ActionPerformed
+
+    private void button5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button5ActionPerformed
+        input.addInput(5);
+    }//GEN-LAST:event_button5ActionPerformed
+
+    private void button6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button6ActionPerformed
+        input.addInput(6);
+    }//GEN-LAST:event_button6ActionPerformed
+
+    private void button7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button7ActionPerformed
+        input.addInput(7);
+    }//GEN-LAST:event_button7ActionPerformed
+
+    private void button8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button8ActionPerformed
+        input.addInput(8);
+    }//GEN-LAST:event_button8ActionPerformed
+
+    private void button9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button9ActionPerformed
+        input.addInput(9);
+    }//GEN-LAST:event_button9ActionPerformed
+
+    private void button0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button0ActionPerformed
+        input.addInput(0);
+    }//GEN-LAST:event_button0ActionPerformed
+
+    private void getBalanceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getBalanceButtonActionPerformed
+        Card card = atm.getCard();
+        if (card != null) {
+            display.setText(new StringBuilder()
+                .append("Which Account?\n")
+                .append(card.toString())
+                .toString());
+            actionType = Action.BALANCE;
+        }
+        else {
+            display.setText("No Card in Machine Yet!");
+        }
+    }//GEN-LAST:event_getBalanceButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -187,5 +495,21 @@ public class ATMFrame extends javax.swing.JFrame
     private javax.swing.JButton button9;
     private javax.swing.JButton buttonCancel;
     private javax.swing.JButton buttonEnter;
+    private javax.swing.JMenuItem cardMenu1;
+    private javax.swing.JMenuItem cardMenu2;
+    private javax.swing.JButton depositButton;
+    private javax.swing.JTextArea display;
+    private javax.swing.JMenuItem envelopeMenu1;
+    private javax.swing.JMenuItem envelopeMenu2;
+    private javax.swing.JMenuItem envelopeMenu3;
+    private javax.swing.JButton getBalanceButton;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton transferButton;
+    private javax.swing.JButton withdrawalButton;
     // End of variables declaration//GEN-END:variables
 }

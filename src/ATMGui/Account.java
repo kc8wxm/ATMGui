@@ -149,7 +149,7 @@ public class Account
      */
     public String toString()
     {
-        return "Account#: " + accountNumber + " " +
+        return accountNumber + " " +
                 fname + " " + lname;
     }
 }

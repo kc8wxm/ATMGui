@@ -38,7 +38,7 @@ public class Card
      * @return account Account for given index or null
      */
     public Account getAccount(int index)
-    {        
+    {
         if (index < accounts.size()) {
             return accounts.get(index);
         }
@@ -52,9 +52,19 @@ public class Card
      *
      * @return Account as string
      */
+    @Override
     public String toString()
     {
-        return "" + accounts;
+        StringBuilder accountsSring = new StringBuilder();
+        int totalAccounts = accounts.size();
+        for (int index = 0; index < totalAccounts; index++) {
+            accountsSring.append("[")
+            .append((index + 1))
+            .append("] ")
+            .append(accounts.get(index).toString())
+            .append("\n");
+        }
+        return accountsSring.toString();
     }
 
 }

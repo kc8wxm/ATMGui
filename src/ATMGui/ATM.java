@@ -21,6 +21,8 @@ public class ATM
     private String location;
     private ArrayList<Envelope> cashEnvelopes;
     private Transaction currentTransaction;
+    private String lastMessage;
+    private boolean toManyAttempts;
 
     private final int MAX_INVALID_ATTEMPTS = 3;
 
@@ -38,8 +40,39 @@ public class ATM
         invalidCardAttempts = 0;
         logger = new Logger();
         cashEnvelopes = new ArrayList<Envelope>();
+        lastMessage = "";
+        toManyAttempts = false;
         currentTransaction = null;
         startUp();
+    }
+
+    /**
+     * Returns the Last Message
+     *
+     * @return
+     */
+    public String getLastMessage()
+    {
+        return lastMessage;
+    }
+
+    /**
+     * Return toManyAttempts boolean value
+     *
+     * @return toManyAttempts
+     */
+    public boolean getToManyAttempts()
+    {
+        return toManyAttempts;
+    }
+
+    /**
+     * Return the card in the ATM Machine
+     * @return
+     */
+    public Card getCard()
+    {
+        return card;
     }
 
     /**
@@ -64,10 +97,12 @@ public class ATM
      * @param card Customers ATM Card
      * @param pin  PIN for the ATM Card
      */
-    public void enterCard(Card card, String pin)
+    public boolean enterCard(Card card, String pin)
     {
         this.card = card;
         this.pin = pin;
+        toManyAttempts = false;
+        return validateCard();
     }
 
     /**
@@ -96,8 +131,7 @@ public class ATM
     public void cancel()
     {
         currentTransaction = null;
-        System.out.println("Current transaction is aborted");
-        System.out.println();
+        lastMessage = "Current transaction is aborted";
     }
 
     /**
@@ -115,14 +149,14 @@ public class ATM
         logger.createLogEntry("Card Validation " + card +
                 " Response: " + success);
         if(!success) {
-            System.out.println("Invalid PIN");
+            lastMessage = "Invalid PIN";
             if(invalidCardAttempts >= MAX_INVALID_ATTEMPTS) {
                 printTooManyPinEntryAttempts();
                 removeCard();
                 return false;
             }
             invalidCardAttempts++;
-            System.out.println("You must re-enter your PIN");
+            lastMessage = "You must re-enter your PIN";
         }
         return success;
     }
@@ -140,7 +174,7 @@ public class ATM
             Account account = card.getAccount(index);
             if(account != null) {
                 currentTransaction = new Transaction(Type.DEPOSIT, amount, account);
-                System.out.println("Please enter your envelope");
+                lastMessage = "Please enter your envelope";
             }
             else {
                 printInvalidAccount();
@@ -151,7 +185,7 @@ public class ATM
     /**
      * Deposits envelope and verifies that the amount in envelope is correct
      * per the transaction amount of the deposit
-     * 
+     *
      * @param envelope
      */
     public void depositEnvelope(Envelope envelope)
@@ -166,9 +200,9 @@ public class ATM
             currentTransaction = null;
         }
         else {
-            System.out.println("Envelope amount is different than what you entered");
-            System.out.println("Your envelope has been returned \n" +
-                    "cancel or try another envelope");
+            lastMessage = "Envelope amount is different than what you entered" +
+                    "Your envelope has been returned \n" +
+                    "cancel or try another envelope";
         }
     }
 
@@ -221,10 +255,10 @@ public class ATM
                         currentTransaction.toString() + "\n" +
                         "Response: " + success);
                 if (!success) {
-                    System.out.println("Transfer failed");
+                    lastMessage = "Transfer failed";
                 }
                 else {
-                    System.out.println("Transfer was successful");
+                    lastMessage = "Transfer was successsful";
                     printReceipt(currentTransaction);
                     currentTransaction = null;
                 }
@@ -243,6 +277,7 @@ public class ATM
         if(validateCard()) {
             Account account = card.getAccount(index);
             if(account != null) {
+                lastMessage = "";
                 return account.getBalance();
             }
         }
@@ -255,10 +290,13 @@ public class ATM
      */
     private void printTooManyPinEntryAttempts()
     {
-        System.out.println("You have tried too many times...");
-        System.out.println("You're card will not be returned.");
-        System.out.println("Please contact the bank to get your");
-        System.out.println("card back.");
+        lastMessage = new StringBuilder()
+            .append("You have tried too many times...\n")
+            .append("You're card will not be returned.\n")
+            .append("Please contact the bank to get your\n")
+            .append("card back.")
+                .toString();
+        toManyAttempts = true;
     }
 
     /**
@@ -266,7 +304,7 @@ public class ATM
      */
     private void printInvalidAccount()
     {
-        System.out.println("Account does not exists");
+        lastMessage = "Account does not exists";
     }
 
     /**
