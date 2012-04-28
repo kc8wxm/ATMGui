@@ -18,6 +18,18 @@ public class ATMFrame extends javax.swing.JFrame
     private Action actionType;
     private Card insertedCard;
 
+    private Envelope envelope;
+    private int accountIndexToUse,accountIndexFromUse;
+    private int amount;
+
+    private final String NO_CARD_INSERTED = "No card inserted yet!",
+            PLEASE_INSERT_YOUR_PIN = "Please enter your PIN",
+            WHAT_WOULD_YOU_LIKE_TO_DO = "What would you like to do?",
+            WHICH_ACCOUNT = "Which account?",
+            WHICH_ACCOUNT_TO = "Which account to",
+            WHICH_ACCOUNT_FROM = "Which account from",
+            AMOUNT = "Amount?",
+            DEPOSIT_ENVELOPE = "Deposit Your Envelope Please";
     private final String CARD1_PIN = "4455", CARD2_PIN = "5544";
     private final int CARD1_ACCOUNT1_AMOUNT = 500,
             CARD1_ACCOUNT2_AMOUNT = 1200,
@@ -35,6 +47,9 @@ public class ATMFrame extends javax.swing.JFrame
         input = new Input();
         actionType = null;
         insertedCard = null;
+        accountIndexFromUse = accountIndexToUse = -1;
+        amount = 0;
+        envelope = null;
     }
 
     /**
@@ -191,6 +206,11 @@ public class ATMFrame extends javax.swing.JFrame
         });
 
         buttonCancel.setText("Cancel");
+        buttonCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonCancelActionPerformed(evt);
+            }
+        });
 
         buttonEnter.setText("Enter");
         buttonEnter.setMaximumSize(new java.awt.Dimension(86, 29));
@@ -217,16 +237,14 @@ public class ATMFrame extends javax.swing.JFrame
                             .add(jPanel1Layout.createSequentialGroup()
                                 .add(button5, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 41, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(button6, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 41, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .add(2, 2, 2))
+                                .add(button6, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 41, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                             .add(jPanel1Layout.createSequentialGroup()
                                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
                                     .add(button8, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 41, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                                     .add(button0, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 41, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(button9, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 42, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .add(1, 1, 1)))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(button9, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 42, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                        .add(1, 1, 1)
                         .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(buttonCancel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 86, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                             .add(buttonEnter, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 86, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
@@ -278,12 +296,27 @@ public class ATMFrame extends javax.swing.JFrame
         jPanel2.add(getBalanceButton);
 
         depositButton.setText("Deposit");
+        depositButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                depositButtonActionPerformed(evt);
+            }
+        });
         jPanel2.add(depositButton);
 
         transferButton.setText("Transfer");
+        transferButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                transferButtonActionPerformed(evt);
+            }
+        });
         jPanel2.add(transferButton);
 
         withdrawalButton.setText("Withdrawal");
+        withdrawalButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                withdrawalButtonActionPerformed(evt);
+            }
+        });
         jPanel2.add(withdrawalButton);
 
         jMenu1.setText("Cards");
@@ -304,6 +337,11 @@ public class ATMFrame extends javax.swing.JFrame
         jMenu2.setText("Envelopes");
 
         envelopeMenu1.setText("100");
+        envelopeMenu1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                envelopeMenu1ActionPerformed(evt);
+            }
+        });
         jMenu2.add(envelopeMenu1);
 
         envelopeMenu2.setText("200");
@@ -345,7 +383,7 @@ public class ATMFrame extends javax.swing.JFrame
 
     private void cardMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cardMenu1ActionPerformed
         // ask for pin number
-        display.setText("Please Enter Your PIN");
+        display.setText(PLEASE_INSERT_YOUR_PIN);
         actionType = Action.INSERT_CARD;
         insertedCard = card1;
     }//GEN-LAST:event_cardMenu1ActionPerformed
@@ -357,24 +395,25 @@ public class ATMFrame extends javax.swing.JFrame
     private void buttonEnterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEnterActionPerformed
         String inputString = input.getInputAsString();
         input.clearInput();
+        String message = "";
         if (actionType != null) {
             switch(actionType) {
                 case INSERT_CARD:
                     if (insertedCard != null && inputString.length() > 0) {
                         if(atm.enterCard(insertedCard, inputString)) {
-                            display.setText("What would you like to do?");
+                            message += WHAT_WOULD_YOU_LIKE_TO_DO;
                             actionType = null;
                         }
                         else {
                             if (atm.getToManyAttempts()) {
                                 insertedCard = null;
                             }
-                            display.setText(atm.getLastMessage());
+                            message += atm.getLastMessage();
                         }
                     }
+                    actionType = null;
                     break;
                 case BALANCE:
-                    String message = "";
                     if (insertedCard != null && inputString.length() > 0) {
                         int accountIndex = Integer.parseInt(inputString);
                         accountIndex--;
@@ -383,9 +422,39 @@ public class ATMFrame extends javax.swing.JFrame
                         message += atm.getLastMessage();
                         message += balance;
                     }
-                    display.setText(message);
+                    actionType = null;
+                    break;
+                case DEPOSIT:
+                    if (insertedCard != null && inputString.length() > 0) {
+                        if (accountIndexToUse == -1) {
+                            int accountIndex = Integer.parseInt(inputString);
+                            accountIndex--;
+                            System.out.println("Account index used" + accountIndex);
+                            accountIndexToUse = accountIndex;
+                        }
+                        else if (accountIndexToUse >= 0) {
+                            if (envelope != null) {
+                                atm.depositEnvelope(envelope);
+                            }
+                            else {
+                                atm.makeDeposit(accountIndexToUse, amount);
+                                message += DEPOSIT_ENVELOPE;
+                            }
+                        }
+                        else {
+                            message += AMOUNT + "\n";
+                        }
+                        message += atm.getLastMessage();
+                    }
+
+                    break;
+                case WITHDRAWAL:
+                    break;
+                case TRANSFER:
                     break;
             }
+            display.setText(message);
+
         }
     }//GEN-LAST:event_buttonEnterActionPerformed
 
@@ -429,15 +498,60 @@ public class ATMFrame extends javax.swing.JFrame
         Card card = atm.getCard();
         if (card != null) {
             display.setText(new StringBuilder()
-                .append("Which Account?\n")
+                .append(WHICH_ACCOUNT + "\n")
                 .append(card.toString())
                 .toString());
             actionType = Action.BALANCE;
         }
         else {
-            display.setText("No Card in Machine Yet!");
+            display.setText(NO_CARD_INSERTED);
         }
     }//GEN-LAST:event_getBalanceButtonActionPerformed
+
+    private void depositButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_depositButtonActionPerformed
+        Card card = atm.getCard();
+        if (card != null) {
+            display.setText(new StringBuilder()
+                .append(WHICH_ACCOUNT + "\n")
+                .append(card.toString())
+                .toString());
+            actionType = Action.DEPOSIT;
+        }
+        else {
+            display.setText(NO_CARD_INSERTED);
+        }
+    }//GEN-LAST:event_depositButtonActionPerformed
+
+    private void transferButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transferButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_transferButtonActionPerformed
+
+    private void withdrawalButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_withdrawalButtonActionPerformed
+        Card card = atm.getCard();
+        if (card != null) {
+            display.setText(new StringBuilder()
+                .append(WHICH_ACCOUNT + "\n")
+                .append(card.toString())
+                .toString());
+            actionType = Action.WITHDRAWAL;
+        }
+        else {
+            display.setText(NO_CARD_INSERTED);
+        }
+    }//GEN-LAST:event_withdrawalButtonActionPerformed
+
+    private void envelopeMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_envelopeMenu1ActionPerformed
+        if (accountIndexToUse >= 0) {
+            // get the account number for the account they need to deposit to
+
+        }
+    }//GEN-LAST:event_envelopeMenu1ActionPerformed
+
+    private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed
+        atm.cancel();
+        display.setText(atm.getLastMessage() + "\n" +
+                WHAT_WOULD_YOU_LIKE_TO_DO);
+    }//GEN-LAST:event_buttonCancelActionPerformed
 
     /**
      * @param args the command line arguments

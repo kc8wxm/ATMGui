@@ -57,3 +57,6 @@ Date: Sat Apr 28 11:17:52 EDT 2012 LogEntry: Card Validation [1] 47004851 Steve 
 Date: Sat Apr 28 11:17:55 EDT 2012 LogEntry: Card Validation [1] 47004851 Steve Sutton[2] 22957967 Steve Sutton Response: true
 Date: Sat Apr 28 11:17:57 EDT 2012 LogEntry: Card Validation [1] 47004851 Steve Sutton[2] 22957967 Steve Sutton Response: true
 Date: Sat Apr 28 11:18:05 EDT 2012 LogEntry: Card Validation [1] 47004851 Steve Sutton[2] 22957967 Steve Sutton Response: true
+Date: Sat Apr 28 15:46:36 EDT 2012 LogEntry: ATM starting up
+Date: Sat Apr 28 15:47:15 EDT 2012 LogEntry: Card Validation [1] 59378566 Steve Sutton[2] 71957779 Steve Sutton Response: true
+Date: Sat Apr 28 15:47:23 EDT 2012 LogEntry: Card Validation [1] 59378566 Steve Sutton[2] 71957779 Steve Sutton Response: true

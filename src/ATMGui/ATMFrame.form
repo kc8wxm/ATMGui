@@ -33,6 +33,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="100"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="envelopeMenu1ActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="envelopeMenu2">
               <Properties>
@@ -132,7 +135,6 @@
                                   <Component id="button5" min="-2" pref="41" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="button6" min="-2" pref="41" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -141,10 +143,9 @@
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="button9" min="-2" pref="42" max="-2" attributes="0"/>
-                                  <EmptySpace min="1" pref="1" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="buttonCancel" alignment="0" min="-2" pref="86" max="-2" attributes="0"/>
                               <Component id="buttonEnter" alignment="0" min="-2" pref="86" max="-2" attributes="0"/>
@@ -284,6 +285,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Cancel"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonCancelActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="buttonEnter">
           <Properties>
@@ -320,16 +324,25 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Deposit"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="depositButtonActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="transferButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Transfer"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="transferButtonActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="withdrawalButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Withdrawal"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="withdrawalButtonActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
