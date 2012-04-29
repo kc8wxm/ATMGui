@@ -1,8 +1,5 @@
 package ATMGui;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import com.sun.xml.internal.messaging.saaj.soap.ver1_1.Message1_1Impl;
-
 /**
  * JFrame to create the GUI for the ATM machine machine
  *
