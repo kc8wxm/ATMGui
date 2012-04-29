@@ -30,6 +30,7 @@ public class ATM
      * Constructor for objects of class ATM
      *
      * @param bank Bank attached to the ATM
+     * @param location
      */
     public ATM(Bank bank, String location)
     {
@@ -96,6 +97,7 @@ public class ATM
      *
      * @param card Customers ATM Card
      * @param pin  PIN for the ATM Card
+     * @return
      */
     public boolean enterCard(Card card, String pin)
     {
@@ -190,6 +192,7 @@ public class ATM
      */
     public void depositEnvelope(Envelope envelope)
     {
+        lastMessage = "";
         if(    envelope.getAccountNumber() == currentTransaction.getAccountTo().getAccountNumber()
             && envelope.getAmount() == currentTransaction.getAmount()) {
             bank.processTransaction(currentTransaction);
@@ -242,6 +245,8 @@ public class ATM
      */
     public void makeTransfer(int indexFrom, int indexTo, int amount)
     {
+        System.out.println("indexfrom: " + indexFrom);
+        System.out.println("indexto: " + indexTo);
         if(validateCard()) {
             Account accountFrom = card.getAccount(indexFrom);
             Account accountTo = card.getAccount(indexTo);

@@ -24,7 +24,7 @@ public class Card
     /**
      * Adds an account number to the ATM Card
      *
-     * @param accountNumber Number for the account
+     * @param account 
      */
     public void addAccount(Account account)
     {

@@ -1,6 +1,7 @@
 package ATMGui;
 
 import com.sun.org.apache.xpath.internal.operations.Bool;
+import com.sun.xml.internal.messaging.saaj.soap.ver1_1.Message1_1Impl;
 
 /**
  * JFrame to create the GUI for the ATM machine machine
@@ -18,7 +19,7 @@ public class ATMFrame extends javax.swing.JFrame
     private Action actionType;
     private Card insertedCard;
 
-    private Envelope envelope;
+    private Envelope envelope1, envelope2, envelope3;
     private int accountIndexToUse,accountIndexFromUse;
     private int amount;
 
@@ -29,7 +30,12 @@ public class ATMFrame extends javax.swing.JFrame
             WHICH_ACCOUNT_TO = "Which account to",
             WHICH_ACCOUNT_FROM = "Which account from",
             AMOUNT = "Amount?",
-            DEPOSIT_ENVELOPE = "Deposit Your Envelope Please";
+            ENTER_DEPOSIT_AMOUNT = "Enter deposit amount",
+            CARD_ALREADY_IN = "There's already a card in!",
+            CARD_REMOVED = "Your card has been removed",
+            DEPOSIT_SUCCESSFUL = "Your Deposit was approved",
+            ENVELOPE_EMPTY = "Nothing in Envelope",
+            CASH_RETURNED = "Cash Given: ";
     private final String CARD1_PIN = "4455", CARD2_PIN = "5544";
     private final int CARD1_ACCOUNT1_AMOUNT = 500,
             CARD1_ACCOUNT2_AMOUNT = 1200,
@@ -41,15 +47,15 @@ public class ATMFrame extends javax.swing.JFrame
      */
     public ATMFrame() {
         initComponents();
-        setupBank();
-        setupPetoskeyBankAtm();
-        setupBankAtmCards();
         input = new Input();
         actionType = null;
         insertedCard = null;
         accountIndexFromUse = accountIndexToUse = -1;
         amount = 0;
-        envelope = null;
+        envelope1 = envelope2 = envelope3 = null;
+        setupBank();
+        setupPetoskeyBankAtm();
+        setupBankAtmCards();
     }
 
     /**
@@ -79,6 +85,8 @@ public class ATMFrame extends javax.swing.JFrame
         card1.addAccount(card1Account2);
         // add card to bank
         bank.addCard(CARD1_PIN, card1);
+        envelope1 = new Envelope(100, card1Account1.getAccountNumber());
+        System.out.println(envelope1);
 
         // create card2 with two accounts
         card2 = new Card();
@@ -88,6 +96,8 @@ public class ATMFrame extends javax.swing.JFrame
         card2.addAccount(card2Account2);
         // add card to bank
         bank.addCard(CARD2_PIN, card2);
+        envelope2 = new Envelope(200, card2Account1.getAccountNumber());
+        envelope3 = new Envelope(125, card2Account2.getAccountNumber());
     }
 
     /**
@@ -114,6 +124,7 @@ public class ATMFrame extends javax.swing.JFrame
         button7 = new javax.swing.JButton();
         buttonCancel = new javax.swing.JButton();
         buttonEnter = new javax.swing.JButton();
+        endButton = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         getBalanceButton = new javax.swing.JButton();
         depositButton = new javax.swing.JButton();
@@ -221,6 +232,15 @@ public class ATMFrame extends javax.swing.JFrame
             }
         });
 
+        endButton.setText("End");
+        endButton.setMaximumSize(new java.awt.Dimension(86, 29));
+        endButton.setMinimumSize(new java.awt.Dimension(86, 29));
+        endButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                endButtonActionPerformed(evt);
+            }
+        });
+
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -233,21 +253,26 @@ public class ATMFrame extends javax.swing.JFrame
                             .add(button7, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 42, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                             .add(button4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 42, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
                             .add(jPanel1Layout.createSequentialGroup()
                                 .add(button5, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 41, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(button6, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 41, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                                .add(button6, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 41, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .add(1, 1, 1)
+                                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(buttonCancel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 86, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                    .add(buttonEnter, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 86, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                             .add(jPanel1Layout.createSequentialGroup()
                                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
                                     .add(button8, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 41, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                                     .add(button0, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 41, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(button9, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 42, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
-                        .add(1, 1, 1)
-                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(buttonCancel, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 86, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(buttonEnter, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 86, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(jPanel1Layout.createSequentialGroup()
+                                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                        .add(button9, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 42, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                                    .add(jPanel1Layout.createSequentialGroup()
+                                        .add(48, 48, 48)
+                                        .add(endButton, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
                     .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel1Layout.createSequentialGroup()
                         .add(button1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 42, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
@@ -281,7 +306,9 @@ public class ATMFrame extends javax.swing.JFrame
                             .add(button8)
                             .add(button9))))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(button0)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(button0)
+                    .add(endButton, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -330,13 +357,18 @@ public class ATMFrame extends javax.swing.JFrame
         jMenu1.add(cardMenu1);
 
         cardMenu2.setText("Card 2 [5544]");
+        cardMenu2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cardMenu2ActionPerformed(evt);
+            }
+        });
         jMenu1.add(cardMenu2);
 
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Envelopes");
 
-        envelopeMenu1.setText("100");
+        envelopeMenu1.setText("100 Card1 Account 1");
         envelopeMenu1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 envelopeMenu1ActionPerformed(evt);
@@ -344,10 +376,20 @@ public class ATMFrame extends javax.swing.JFrame
         });
         jMenu2.add(envelopeMenu1);
 
-        envelopeMenu2.setText("200");
+        envelopeMenu2.setText("200 Card 2 Account 1");
+        envelopeMenu2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                envelopeMenu2ActionPerformed(evt);
+            }
+        });
         jMenu2.add(envelopeMenu2);
 
-        envelopeMenu3.setText("125");
+        envelopeMenu3.setText("125 Card 2 Account 2");
+        envelopeMenu3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                envelopeMenu3ActionPerformed(evt);
+            }
+        });
         jMenu2.add(envelopeMenu3);
 
         jMenuBar1.add(jMenu2);
@@ -381,17 +423,37 @@ public class ATMFrame extends javax.swing.JFrame
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * runs the cardMenuAction when user selects a card to add.
+     *
+     * @param evt event
+     */
     private void cardMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cardMenu1ActionPerformed
-        // ask for pin number
-        display.setText(PLEASE_INSERT_YOUR_PIN);
-        actionType = Action.INSERT_CARD;
-        insertedCard = card1;
+        if(insertedCard == null) {
+            // ask for pin number
+            display.setText(PLEASE_INSERT_YOUR_PIN);
+            actionType = Action.INSERT_CARD;
+            insertedCard = card1;
+        }
+        else {
+            display.setText(CARD_ALREADY_IN);
+        }
     }//GEN-LAST:event_cardMenu1ActionPerformed
 
+    /**
+     * runs the action from button1
+     *
+     * @param evt event
+     */
     private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
         input.addInput(1);
     }//GEN-LAST:event_button1ActionPerformed
 
+    /**
+     * runs the action for enter button
+     *
+     * @param evt event
+     */
     private void buttonEnterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEnterActionPerformed
         String inputString = input.getInputAsString();
         input.clearInput();
@@ -399,103 +461,114 @@ public class ATMFrame extends javax.swing.JFrame
         if (actionType != null) {
             switch(actionType) {
                 case INSERT_CARD:
-                    if (insertedCard != null && inputString.length() > 0) {
-                        if(atm.enterCard(insertedCard, inputString)) {
-                            message += WHAT_WOULD_YOU_LIKE_TO_DO;
-                            actionType = null;
-                        }
-                        else {
-                            if (atm.getToManyAttempts()) {
-                                insertedCard = null;
-                            }
-                            message += atm.getLastMessage();
-                        }
-                    }
-                    actionType = null;
+                    message = runInsertCardAction(inputString);
                     break;
                 case BALANCE:
-                    if (insertedCard != null && inputString.length() > 0) {
-                        int accountIndex = Integer.parseInt(inputString);
-                        accountIndex--;
-                        System.out.println("Account index used" + accountIndex);
-                        int balance = atm.getBalanceForAccount(accountIndex);
-                        message += atm.getLastMessage();
-                        message += balance;
-                    }
-                    actionType = null;
+                    message = runBalanceAction(inputString);
                     break;
                 case DEPOSIT:
-                    if (insertedCard != null && inputString.length() > 0) {
-                        if (accountIndexToUse == -1) {
-                            int accountIndex = Integer.parseInt(inputString);
-                            accountIndex--;
-                            System.out.println("Account index used" + accountIndex);
-                            accountIndexToUse = accountIndex;
-                        }
-                        else if (accountIndexToUse >= 0) {
-                            if (envelope != null) {
-                                atm.depositEnvelope(envelope);
-                            }
-                            else {
-                                atm.makeDeposit(accountIndexToUse, amount);
-                                message += DEPOSIT_ENVELOPE;
-                            }
-                        }
-                        else {
-                            message += AMOUNT + "\n";
-                        }
-                        message += atm.getLastMessage();
-                    }
-
+                    message = runDepositAction(inputString);
                     break;
                 case WITHDRAWAL:
+                    message = runWithdrawalAction(inputString);
                     break;
                 case TRANSFER:
+                    message = runTransferAction(inputString);
                     break;
             }
             display.setText(message);
-
         }
     }//GEN-LAST:event_buttonEnterActionPerformed
 
+    /**
+     * runs the action for button2
+     *
+     * @param evt event
+     */
     private void button2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button2ActionPerformed
         input.addInput(2);
     }//GEN-LAST:event_button2ActionPerformed
 
+    /**
+     * runs the action for button3
+     *
+     * @param evt event
+     */
     private void button3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button3ActionPerformed
         input.addInput(3);
     }//GEN-LAST:event_button3ActionPerformed
 
+    /**
+     * runs the action for button4
+     *
+     * @param evt event
+     */
     private void button4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button4ActionPerformed
         input.addInput(4);
     }//GEN-LAST:event_button4ActionPerformed
 
+    /**
+     * runs the action for button5
+     *
+     * @param evt event
+     */
     private void button5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button5ActionPerformed
         input.addInput(5);
     }//GEN-LAST:event_button5ActionPerformed
 
+    /**
+     * runs the action for button6
+     *
+     * @param evt event
+     */
     private void button6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button6ActionPerformed
         input.addInput(6);
     }//GEN-LAST:event_button6ActionPerformed
 
+    /**
+     * runs the action for button7
+     *
+     * @param evt event
+     */
     private void button7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button7ActionPerformed
         input.addInput(7);
     }//GEN-LAST:event_button7ActionPerformed
 
+    /**
+     * runs the action for button8
+     *
+     * @param evt event
+     */
     private void button8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button8ActionPerformed
         input.addInput(8);
     }//GEN-LAST:event_button8ActionPerformed
 
+    /**
+     * runs the action for button9
+     *
+     * @param evt event
+     */
     private void button9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button9ActionPerformed
         input.addInput(9);
     }//GEN-LAST:event_button9ActionPerformed
 
+    /**
+     * runs the action for button0
+     *
+     * @param evt event
+     */
     private void button0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button0ActionPerformed
         input.addInput(0);
     }//GEN-LAST:event_button0ActionPerformed
 
+    /**
+     * runs the action for balanceButton
+     *
+     * @param evt event
+     */
     private void getBalanceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getBalanceButtonActionPerformed
         Card card = atm.getCard();
+        accountIndexToUse = -1;
         if (card != null) {
             display.setText(new StringBuilder()
                 .append(WHICH_ACCOUNT + "\n")
@@ -508,8 +581,14 @@ public class ATMFrame extends javax.swing.JFrame
         }
     }//GEN-LAST:event_getBalanceButtonActionPerformed
 
+    /**
+     * runs the actions for depositButton
+     *
+     * @param evt event
+     */
     private void depositButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_depositButtonActionPerformed
         Card card = atm.getCard();
+        accountIndexToUse = -1;
         if (card != null) {
             display.setText(new StringBuilder()
                 .append(WHICH_ACCOUNT + "\n")
@@ -522,10 +601,21 @@ public class ATMFrame extends javax.swing.JFrame
         }
     }//GEN-LAST:event_depositButtonActionPerformed
 
+    /**
+     * runs the action for transferButton
+     *
+     * @param evt event
+     */
     private void transferButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transferButtonActionPerformed
-        // TODO add your handling code here:
+        actionType = Action.TRANSFER;
+        display.setText(WHICH_ACCOUNT_FROM);
     }//GEN-LAST:event_transferButtonActionPerformed
 
+    /**
+     * runs the action for withdrawalButton
+     *
+     * @param evt event
+     */
     private void withdrawalButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_withdrawalButtonActionPerformed
         Card card = atm.getCard();
         if (card != null) {
@@ -540,18 +630,68 @@ public class ATMFrame extends javax.swing.JFrame
         }
     }//GEN-LAST:event_withdrawalButtonActionPerformed
 
+    /**
+     * runs the action for envelopeMenu1
+     *
+     * @param evt event
+     */
     private void envelopeMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_envelopeMenu1ActionPerformed
-        if (accountIndexToUse >= 0) {
-            // get the account number for the account they need to deposit to
-
-        }
+        display.setText(depositEnvelope(envelope1));
     }//GEN-LAST:event_envelopeMenu1ActionPerformed
 
+    /**
+     * runs the action for cancelButton
+     *
+     * @param evt event
+     */
     private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed
         atm.cancel();
         display.setText(atm.getLastMessage() + "\n" +
                 WHAT_WOULD_YOU_LIKE_TO_DO);
+        input.clearInput();
     }//GEN-LAST:event_buttonCancelActionPerformed
+
+    /**
+     * runs the action for envelopeMenu2
+     *
+     * @param evt event
+     */
+    private void envelopeMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_envelopeMenu2ActionPerformed
+        display.setText(depositEnvelope(envelope2));
+    }//GEN-LAST:event_envelopeMenu2ActionPerformed
+
+    /**
+     * runs the action for envelopeMenu3
+     *
+     * @param evt event
+     */
+    private void envelopeMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_envelopeMenu3ActionPerformed
+        display.setText(depositEnvelope(envelope3));
+    }//GEN-LAST:event_envelopeMenu3ActionPerformed
+
+    /**
+     * Removes the card from the machine
+     *
+     * @param evt event
+     */
+    private void endButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_endButtonActionPerformed
+        insertedCard = null;
+        actionType = null;
+        display.setText(CARD_REMOVED);
+        input.clearInput();
+    }//GEN-LAST:event_endButtonActionPerformed
+
+    private void cardMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cardMenu2ActionPerformed
+        if(insertedCard == null) {
+            // ask for pin number
+            display.setText(PLEASE_INSERT_YOUR_PIN);
+            actionType = Action.INSERT_CARD;
+            insertedCard = card2;
+        }
+        else {
+            display.setText(CARD_ALREADY_IN);
+        }
+    }//GEN-LAST:event_cardMenu2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -613,6 +753,7 @@ public class ATMFrame extends javax.swing.JFrame
     private javax.swing.JMenuItem cardMenu2;
     private javax.swing.JButton depositButton;
     private javax.swing.JTextArea display;
+    private javax.swing.JButton endButton;
     private javax.swing.JMenuItem envelopeMenu1;
     private javax.swing.JMenuItem envelopeMenu2;
     private javax.swing.JMenuItem envelopeMenu3;
@@ -626,4 +767,178 @@ public class ATMFrame extends javax.swing.JFrame
     private javax.swing.JButton transferButton;
     private javax.swing.JButton withdrawalButton;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * Returns lastMessafe string from the ATM after inserting Card
+     *
+     * @param inputString input string from user
+     *
+     * @return message
+     */
+    private String runInsertCardAction(String inputString) {
+        String message = "";
+        if (insertedCard != null && inputString.length() > 0) {
+            if(atm.enterCard(insertedCard, inputString)) {
+                message += WHAT_WOULD_YOU_LIKE_TO_DO;
+                actionType = null;
+            }
+            else {
+                if (atm.getToManyAttempts()) {
+                    insertedCard = null;
+                }
+                message += atm.getLastMessage();
+            }
+        }
+        actionType = null;
+        return message;
+    }
+
+    /**
+     * Returns lastMessage string from the ATM after getting balance.
+     *
+     * @param inputString input string from user
+     *
+     * @return message
+     */
+    private String runBalanceAction(String inputString) {
+        String message = "";
+        if (insertedCard != null && inputString.length() > 0) {
+            int accountIndex = Integer.parseInt(inputString);
+            accountIndex--;
+            System.out.println("Account index used" + accountIndex);
+            int balance = atm.getBalanceForAccount(accountIndex);
+            message += atm.getLastMessage();
+            message += balance + "\n";
+            message += WHAT_WOULD_YOU_LIKE_TO_DO;
+        }
+        actionType = null;
+        return message;
+    }
+
+    /**
+     * Returns lastMessage string from the ATM after making deposit.
+     * Deposit is made in more than one step.
+     *
+     * @param inputString input string from user
+     *
+     * @return message
+     */
+    private String runDepositAction(String inputString) {
+        String message = "";
+        if (insertedCard != null && inputString.length() > 0) {
+            if (accountIndexToUse == -1) {
+                int accountIndex = Integer.parseInt(inputString);
+                accountIndex--;
+                System.out.println("Account index used" + accountIndex);
+                accountIndexToUse = accountIndex;
+                message += ENTER_DEPOSIT_AMOUNT;
+            }
+            else {
+                int amountToDeposit = Integer.parseInt(inputString);
+                input.clearInput();
+                atm.makeDeposit(accountIndexToUse, amountToDeposit);
+            }
+            message += atm.getLastMessage();
+        }
+        return message;
+    }
+
+    /**
+     * Returns lastMessage from ATM when running the withdrawal
+     *
+     * @param inputString input string from user
+     *
+     * @return message
+     */
+    private String runWithdrawalAction(String inputString) {
+        StringBuilder message = new StringBuilder();
+        if (accountIndexFromUse == -1) {
+            accountIndexFromUse = Integer.parseInt(inputString);
+            accountIndexFromUse--;
+            message.append(AMOUNT);
+        }
+        else {
+            amount = Integer.parseInt(inputString);
+            if (amount > 0) {
+                amount = atm.makeWithdrawal(accountIndexFromUse, amount);
+                message.append(CASH_RETURNED)
+                    .append("\n")
+                    .append(amount);
+                amount = 0;
+                actionType = null;
+            }
+            else {
+                message.append(AMOUNT);
+            }
+        }
+        return message.toString();
+    }
+
+    /**
+     * Returns lastMessage from ATM when running the transfer
+     *
+     * @param inputString input string from user
+     *
+     * @return message
+     */
+    private String runTransferAction(String inputString) {
+        StringBuilder message = new StringBuilder();
+        if (accountIndexFromUse == -1) {
+            accountIndexFromUse = Integer.parseInt(inputString);
+            accountIndexFromUse--;
+            System.out.println("Setting accountIndexFromUse: " + accountIndexFromUse);
+            message.append(WHICH_ACCOUNT_TO);
+        }
+        else if (accountIndexToUse == -1) {
+            accountIndexToUse = Integer.parseInt(inputString);
+            accountIndexToUse--;
+            System.out.println("Setting accountIndexToUse: " + accountIndexToUse);
+            message.append(AMOUNT);
+        }
+        else if (Integer.parseInt(inputString) > 0) {
+            atm.makeTransfer(
+                    accountIndexFromUse,
+                    accountIndexToUse,
+                    Integer.parseInt(inputString));
+            message.append(atm.getLastMessage())
+                .append("\n")
+                .append(WHAT_WOULD_YOU_LIKE_TO_DO);
+
+            actionType = null;
+            amount = 0;
+        }
+        else {
+            message.append(AMOUNT);
+        }
+        return message.toString();
+    }
+
+    /**
+     * Return a string from atm after the envelope is deposited
+     *
+     * @param envelope Envelope
+     *
+     * @return message
+     */
+    private String depositEnvelope(Envelope envelope)
+    {
+        actionType = null;
+        if (envelope != null) {
+            atm.depositEnvelope(envelope);
+            String lastMessage = atm.getLastMessage();
+            if (lastMessage.isEmpty()) {
+                return new StringBuilder()
+                        .append(DEPOSIT_SUCCESSFUL)
+                        .append("\n")
+                        .append(WHAT_WOULD_YOU_LIKE_TO_DO)
+                        .toString();
+            }
+            else {
+                return atm.getLastMessage();
+            }
+        }
+        else {
+            return ENVELOPE_EMPTY;
+        }
+    }
 }

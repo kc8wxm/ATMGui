@@ -58,6 +58,9 @@ public final class Input
         return input;
     }
 
+    /**
+     * 
+     */
     public void clearInput()
     {
         inputArray = new ArrayList<Integer>();

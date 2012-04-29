@@ -13,6 +13,8 @@ public class Envelope
 
     /**
      * Constructor for objects of class Envelope
+     * @param cash
+     * @param accountNumber 
      */
     public Envelope(int cash, long accountNumber)
     {
