@@ -1,2 +1,8 @@
 /dist/
 /build/
+atmLogFile.txt
+*.txt
+
+*.xml
+
+*.properties

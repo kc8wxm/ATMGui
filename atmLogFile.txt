@@ -1,0 +1,23 @@
+Date: Thu Feb 21 21:59:34 EST 2013 LogEntry: ATM starting up
+Date: Thu Feb 21 21:59:47 EST 2013 LogEntry: Card Validation [1] 11422010 Steve Sutton[2] 42958577 Steve Sutton Response: false
+Date: Thu Feb 21 22:00:30 EST 2013 LogEntry: Card Validation [1] 11422010 Steve Sutton[2] 42958577 Steve Sutton Response: false
+Date: Thu Feb 21 22:01:02 EST 2013 LogEntry: Card Validation [1] 11422010 Steve Sutton[2] 42958577 Steve Sutton Response: true
+Date: Thu Feb 21 22:01:11 EST 2013 LogEntry: Card Validation [1] 11422010 Steve Sutton[2] 42958577 Steve Sutton Response: true
+Date: Thu Feb 21 22:01:16 EST 2013 LogEntry: Card Validation [1] 11422010 Steve Sutton[2] 42958577 Steve Sutton Response: true
+Date: Thu Feb 21 22:01:38 EST 2013 LogEntry: Card Validation [1] 11422010 Steve Sutton[2] 42958577 Steve Sutton Response: true
+Date: Thu Feb 21 22:01:41 EST 2013 LogEntry: Deposit: Date: Thu Feb 21 22:01:38 EST 2013Type: Deposit Account To: 11422010 Steve SuttonDeposit Amount: $100.00Available Balance: 600.00
+Date: Thu Feb 21 22:01:47 EST 2013 LogEntry: Card Validation [1] 11422010 Steve Sutton[2] 42958577 Steve Sutton Response: true
+Date: Thu Feb 21 22:01:59 EST 2013 LogEntry: Card Validation [1] 11422010 Steve Sutton[2] 42958577 Steve Sutton Response: true
+Date: Thu Feb 21 22:01:59 EST 2013 LogEntry: Withdrawal: Date: Thu Feb 21 22:01:59 EST 2013Type: Withdrawal Account From: 11422010 Steve SuttonWithdrawal Amount: $550.00Available Balance: 600.00
+Date: Thu Feb 21 22:02:04 EST 2013 LogEntry: Card Validation [1] 11422010 Steve Sutton[2] 42958577 Steve Sutton Response: true
+Date: Fri May 10 10:20:27 EDT 2013 LogEntry: ATM starting up
+Date: Fri May 10 10:20:45 EDT 2013 LogEntry: Card Validation [1] 38958790 Steve Sutton[2] 79011343 Steve Sutton Response: false
+Date: Fri May 10 10:21:52 EDT 2013 LogEntry: Card Validation [1] 38958790 Steve Sutton[2] 79011343 Steve Sutton Response: true
+Date: Fri May 10 10:22:10 EDT 2013 LogEntry: Card Validation [1] 38958790 Steve Sutton[2] 79011343 Steve Sutton Response: true
+Date: Fri May 10 10:22:16 EDT 2013 LogEntry: Card Validation [1] 38958790 Steve Sutton[2] 79011343 Steve Sutton Response: true
+Date: Fri May 10 10:23:27 EDT 2013 LogEntry: Card Validation [1] 38958790 Steve Sutton[2] 79011343 Steve Sutton Response: true
+Date: Fri May 10 10:23:59 EDT 2013 LogEntry: Card Validation [1] 38958790 Steve Sutton[2] 79011343 Steve Sutton Response: true
+Date: Fri May 10 10:24:00 EDT 2013 LogEntry: Deposit: Date: Fri May 10 10:23:59 EDT 2013Type: Deposit Account To: 38958790 Steve SuttonDeposit Amount: $100.00Available Balance: 600.00
+Date: Fri May 10 10:24:07 EDT 2013 LogEntry: Card Validation [1] 38958790 Steve Sutton[2] 79011343 Steve Sutton Response: true
+Date: Fri May 10 10:24:25 EDT 2013 LogEntry: Card Validation [1] 18774416 Carol Sutton[2] 78376981 Carol Sutton Response: true
+Date: Fri May 10 10:24:28 EDT 2013 LogEntry: Card Validation [1] 18774416 Carol Sutton[2] 78376981 Carol Sutton Response: true
